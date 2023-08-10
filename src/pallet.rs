@@ -24,8 +24,8 @@ impl Pallet {
     pub fn change_to_available (&mut self) {
         self.status = Status::Available;
     }
-    pub fn change_to_awaiting_putaway(&mut self, slot: String) {
-        self.status = Status::AwaitingPutaway(Slot::new(slot));
+    pub fn change_to_awaiting_putaway(&mut self, slot: Slot) {
+        self.status = Status::AwaitingPutaway(slot);
     }
     pub fn create(id: u64, sku: u32, quantity: u16) -> Pallet {
         Pallet {
