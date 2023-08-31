@@ -1,6 +1,5 @@
-use std::{collections::HashMap};
-use rand::{Rng,};
-use std::{fmt, error::Error};
+use rand::Rng;
+use std::{collections::HashMap, fmt, error::Error};
 use crate::{pallet::{Pallet, self}, DID, slots::{Slots, Slot}};
 
 #[derive(Debug)]
@@ -52,7 +51,7 @@ impl Storage {
         let mut rng = rand::thread_rng();
         loop{
             let tail: u64 = rng.gen_range(0..=99999999999999);
-            let candidate_id: u64 = DID * 10_u64.pow(15) + tail;
+            let candidate_id: u64 = DID as u64 * 10_u64.pow(15) + tail;
             if !self.0.contains_key(&candidate_id) {
                 return candidate_id;
             }

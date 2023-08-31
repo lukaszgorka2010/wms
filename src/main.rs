@@ -4,11 +4,12 @@ use storage::Storage;
 
 use crate::slots::Slots;
 
+mod orderfilling;
 mod pallet;
 mod slots;
 mod storage;
 
-const DID: u64 = 2137;
+const DID: u32 = 2137;
 
 fn main() {
 let mut stock = Storage::default();
