@@ -1,7 +1,9 @@
 #![allow(dead_code)]
 
-use storage::Storage;
+use std::collections::HashMap;
 
+use orderfilling::Order;
+use storage::Storage;
 use crate::slots::Slots;
 
 mod orderfilling;
@@ -12,7 +14,23 @@ mod storage;
 const DID: u32 = 2137;
 
 fn main() {
-let mut stock = Storage::default();
+    let order= Order {
+        order_number: 1234547891u64,
+        depot_id: 2137,
+        order_lines: {
+            let mut map: HashMap<String, u32> = HashMap::new();
+            map.insert(12345678.to_string(), 236);
+            map.insert(12457894.to_string(), 12);
+            map
+        }
+    };
+    let json = serde_json::to_string_pretty(&order);
+    print!("{:#?}", order);
+    match json {
+        Ok(son) => print!("{:?}", son),
+        Err(_) => println!("Serialisation error"),
+    }
+/*let mut stock = Storage::default();
 for _ in 0..3 {
     stock.add_pallet(123456, 125);
 }
@@ -29,4 +47,6 @@ for _ in 0..5 {
 println!("Slots:\n{:#?}", slots);
 
 println!("Stock\n{:#?}",stock);
+*/
+
 }

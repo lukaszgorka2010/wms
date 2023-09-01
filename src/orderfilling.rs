@@ -1,4 +1,5 @@
 use std::{collections::HashMap, error::Error, fmt};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct ImportError();
@@ -8,14 +9,15 @@ impl fmt::Display for ImportError {
         write!(f, "Import failed")
     }
 }
-
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Order {
-    depot_id: u32,
-    order_number: u64,
-    order_lines: HashMap<u32, u32>,
+    pub order_number: u64,
+    pub depot_id: u32,
+    pub order_lines: HashMap<String, u32>,
 }
- impl Order {
+
+impl Order {
      pub fn import() -> Result<Self, ImportError> {
-        todo!();
+        todo!()
      }
  }
