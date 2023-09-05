@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use orderfilling::Order;
 use storage::Storage;
-use crate::slots::Slots;
+use slots::Slots;
 
 mod orderfilling;
 mod pallet;

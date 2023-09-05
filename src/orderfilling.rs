@@ -1,8 +1,9 @@
-use std::{collections::HashMap, error::Error, fmt};
+use std::{collections::HashMap, error::Error, fmt, fs};
 use serde::{Deserialize, Serialize};
+use serde_json;
 
 #[derive(Debug)]
-pub struct ImportError();
+pub struct ImportError(String);
 impl Error for ImportError {}
 impl fmt::Display for ImportError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -17,7 +18,14 @@ pub struct Order {
 }
 
 impl Order {
-     pub fn import() -> Result<Self, ImportError> {
-        todo!()
+     pub fn from_file(path: &str) -> Result<Self, ImportError> {
+        match fs::read_to_string(path) {
+            Ok(json) => {
+                match serde_json::from_str::<Order>(&json){
+                    Ok(order) => Ok(order),
+                    Err(why) => Err(ImportError(why.to_string())),
+                }},
+            Err(why) => Err(ImportError(why.to_string())),
+        }
      }
  }
