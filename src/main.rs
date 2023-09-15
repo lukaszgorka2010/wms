@@ -1,20 +1,32 @@
 #![allow(dead_code)]
-
-use std::collections::HashMap;
+// Imports
+use std::{collections::HashMap};
 
 use orderfilling::Order;
-use storage::Storage;
 use slots::Slots;
+use storage::Storage;
+use serde::{Serialize, Deserialize};
 
 mod orderfilling;
 mod pallet;
 mod slots;
 mod storage;
 
-const DID: u32 = 2137;
+// Unique depot identifier, should stored in a config file.
+#[derive(Serialize, Deserialize)]
+struct Config {
+    did: u64,
+}
 
-fn main() {
-    let order= Order {
+impl ::std::default::Default for Config {
+    fn default() -> Self {
+        Self { did: 00000 }
+    }
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>>{
+    let confg: Config = confy::load("wms", "cfg")?;
+    /*let order= Order {
         order_number: 1234547891u64,
         depot_id: 2137,
         order_lines: {
@@ -29,7 +41,7 @@ fn main() {
     match json {
         Ok(son) => print!("{:?}", son),
         Err(_) => println!("Serialisation error"),
-    }
+    }*/
 /*let mut stock = Storage::default();
 for _ in 0..3 {
     stock.add_pallet(123456, 125);
@@ -48,5 +60,5 @@ println!("Slots:\n{:#?}", slots);
 
 println!("Stock\n{:#?}",stock);
 */
-
+Ok(())
 }
