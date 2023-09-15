@@ -41,3 +41,57 @@ impl Pallet {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::slots::Slot;
+
+    #[test]
+    fn test_update_quantity() {
+        let mut pallet = Pallet::create(1, 1001, 50);
+        pallet.update_quantity(60);
+        assert_eq!(pallet.quantity, 60);
+    }
+
+    #[test]
+    fn test_update_slot() {
+        let mut pallet = Pallet::create(1, 1001, 50);
+        let slot = Slot::new("A1001".to_string());
+        pallet.update_slot(&slot);
+        assert_eq!(pallet.slot, Some(slot));
+    }
+
+    #[test]
+    fn test_change_to_available() {
+        let mut pallet = Pallet::create(1, 1001, 50);
+        pallet.change_to_available();
+        match pallet.status {
+            Status::Available => assert!(true),
+            _ => assert!(false, "Pallet status should be Available"),
+        }
+    }
+
+    #[test]
+    fn test_change_to_awaiting_putaway() {
+        let mut pallet = Pallet::create(1, 1001, 50);
+        let slot = Slot::new("A1001".to_string());
+        pallet.change_to_awaiting_putaway(slot.clone());
+        match &pallet.status {
+            Status::AwaitingPutaway(s) => assert_eq!(s, &slot),
+            _ => assert!(false, "Pallet status should be AwaitingPutaway"),
+        }
+    }
+
+    #[test]
+    fn test_create_pallet() {
+        let pallet = Pallet::create(1, 1001, 50);
+        assert_eq!(pallet.id, 1);
+        assert_eq!(pallet.sku, 1001);
+        assert_eq!(pallet.quantity, 50);
+        assert_eq!(pallet.slot, None);
+        match pallet.status {
+            Status::Available => assert!(true),
+            _ => assert!(false, "Newly created pallet should have status Available"),
+        }
+    }
+}

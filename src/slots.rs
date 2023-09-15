@@ -31,3 +31,40 @@ impl Slots {
     }
     //pub fn remove_pallet(&mut self,)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_add_slot() {
+        let mut slots = Slots::default();
+        slots.add_slot("A1001".to_string());
+        assert_eq!(slots.empty.len(), 1);
+        assert_eq!(slots.empty[0].to_string(), "A1001");
+    }
+
+    #[test]
+    fn test_get_empty_slot() {
+        let mut slots = Slots::default();
+        slots.add_slot("A1001".to_string());
+        let slot = slots.get_empty().unwrap();
+        assert_eq!(slot.to_string(), "A1001");
+        assert_eq!(slots.empty.len(), 0);
+    }
+
+    #[test]
+    fn test_get_empty_slot_when_none() {
+        let mut slots = Slots::default();
+        let slot = slots.get_empty();
+        assert!(slot.is_none());
+    }
+
+    #[test]
+    fn test_assign_pallet() {
+        let mut slots = Slots::default();
+        let slot = Slot::new("A1001".to_string());
+        slots.assign_pallet(slot.clone(), 12345);
+        assert_eq!(slots.occupied.get(&slot).unwrap(), &12345);
+    }
+}
