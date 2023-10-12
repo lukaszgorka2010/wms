@@ -1,10 +1,10 @@
 #![allow(dead_code)]
 // Imports
-use std::{collections::HashMap};
+//use std::{collections::HashMap};
 
-use orderfilling::Order;
-use slots::Slots;
-use storage::Storage;
+//use orderfilling::Order;
+//use slots::Slots;
+//use storage::Storage;
 use serde::{Serialize, Deserialize};
 
 mod orderfilling;
@@ -25,7 +25,7 @@ impl ::std::default::Default for Config {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
-    let confg: Config = confy::load("wms", "cfg")?;
+    let _confg: Config = confy::load("wms", "cfg")?;
     /*let order= Order {
         order_number: 1234547891u64,
         depot_id: 2137,

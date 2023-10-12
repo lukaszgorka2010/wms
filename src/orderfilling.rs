@@ -1,15 +1,15 @@
-use std::{collections::HashMap, error::Error, fmt, fs};
+use std::{collections::HashMap, fs};
 use serde::{Deserialize, Serialize};
 use serde_json;
 
-#[derive(Debug)]
-pub struct ImportError(String);
-impl Error for ImportError {}
-impl fmt::Display for ImportError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Import failed")
-    }
+#[derive(Debug, thiserror::Error)]
+pub enum OrderFillingError {
+    #[error("Failed to import order file")]
+    FileReadError(std::io::Error),
+    #[error("Failed to deserialize order file")]
+    FileDeserializeError(serde_json::Error),
 }
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Order {
     pub order_number: u64,
@@ -18,14 +18,13 @@ pub struct Order {
 }
 
 impl Order {
-     pub fn from_file(path: &str) -> Result<Self, ImportError> {
+     pub fn from_file(path: &str) -> Result<Self, OrderFillingError> {
         match fs::read_to_string(path) {
-            Ok(json) => {
-                match serde_json::from_str::<Order>(&json){
-                    Ok(order) => Ok(order),
-                    Err(why) => Err(ImportError(why.to_string())),
-                }},
-            Err(why) => Err(ImportError(why.to_string())),
+            Ok(json) => match serde_json::from_str::<Order>(&json) {
+                Ok(order) => Ok(order),
+                Err(why) => Err(OrderFillingError::FileDeserializeError(why)),
+            },
+            Err(why) => Err(OrderFillingError::FileReadError(why)),
         }
      }
  }
