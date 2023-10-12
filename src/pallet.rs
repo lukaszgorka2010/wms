@@ -56,7 +56,7 @@ mod tests {
     #[test]
     fn test_update_slot() {
         let mut pallet = Pallet::create(1, 1001, 50);
-        let slot = Slot::new("A1001".to_string());
+        let slot = Slot::new("A1001");
         pallet.update_slot(&slot);
         assert_eq!(pallet.slot, Some(slot));
     }
@@ -74,7 +74,7 @@ mod tests {
     #[test]
     fn test_change_to_awaiting_putaway() {
         let mut pallet = Pallet::create(1, 1001, 50);
-        let slot = Slot::new("A1001".to_string());
+        let slot = Slot::new("A1001");
         pallet.change_to_awaiting_putaway(slot.clone());
         match &pallet.status {
             Status::AwaitingPutaway(s) => assert_eq!(s, &slot),

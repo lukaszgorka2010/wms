@@ -10,12 +10,12 @@ mod storage;
 // Unique depot identifier, should stored in a config file.
 #[derive(Serialize, Deserialize)]
 struct Config {
-    did: u64,
+    depot_id: u64,
 }
 
 impl ::std::default::Default for Config {
     fn default() -> Self {
-        Self { did: 00000 }
+        Self { depot_id: 99999}
     }
 }
 
