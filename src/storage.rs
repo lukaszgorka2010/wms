@@ -1,15 +1,11 @@
 use rand::Rng;
-use std::{collections::HashMap, fmt, error::Error};
+use std::collections::HashMap;
 use crate::{pallet::{Pallet, self}, slots::{Slots, Slot}};
 
-#[derive(Debug)]
-pub struct PutawayError;
-impl Error for PutawayError {}
-
-impl fmt::Display for PutawayError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Slot not assigned to pallet")
-    }
+#[derive(Debug, thiserror::Error)]
+pub enum StorageError {
+    #[error("Failed to perform putaway")]
+    Putaway,
 }
 
 #[derive(Debug, Default)]
@@ -28,22 +24,15 @@ impl Storage {
         slots.assign_pallet(slot.to_owned(), id);
         self.0.get_mut(&id).unwrap().change_to_awaiting_putaway(slot);
     }
-    pub fn putaway(&mut self, pallet_id: u64) -> Result<(), PutawayError> {
+    pub fn putaway(&mut self, pallet_id: u64) -> Result<(), StorageError> {
         let pallet = self.0.get_mut(&pallet_id).unwrap();
-        /*     if pallet.status() == pallet::Status::AwaitingPutaway() {
-                    pallet.update_slot(slot);
-                    pallet.change_to_available();
-                    Ok(())
-                } else {
-                    Err(PutawayError)
-                }         */
         match pallet.clone().status() {
             pallet::Status::AwaitingPutaway(slot) => {
                 pallet.update_slot(slot);
                 pallet.change_to_available();
                 Ok(())
             },
-            _ => Err(PutawayError{})
+            _ => Err(StorageError::Putaway),
         }
     }
 
