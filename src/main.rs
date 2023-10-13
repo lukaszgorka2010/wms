@@ -20,6 +20,8 @@ impl ::std::default::Default for Config {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
-    let _confg: Config = confy::load("wms", "cfg")?;
+    let confg: Config = confy::load("wms", "cfg")?;
+    let mut storage = storage::Storage::new(confg.depot_id);
+    storage.add_pallet(123456, 200);
 Ok(())
 }

@@ -5,9 +5,9 @@ use serde_json;
 
 #[derive(Debug, thiserror::Error)]
 pub enum OrderFillingError {
-    #[error("Failed to import order file")]
+    #[error("Failed to import order file: {0}")]
     FileReadError(std::io::Error),
-    #[error("Failed to deserialize order file")]
+    #[error("Failed to deserialize order file: {0}")]
     FileDeserializeError(serde_json::Error),
 }
 
