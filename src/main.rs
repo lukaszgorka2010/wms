@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 // Imports
 use serde::{Serialize, Deserialize};
+use confy;
 
 mod orderfilling;
 mod pallet;
@@ -19,9 +20,12 @@ impl ::std::default::Default for Config {
     }
 }
 
+
 fn main() -> Result<(), Box<dyn std::error::Error>>{
     let confg: Config = confy::load("wms", "cfg")?;
     let mut storage = storage::Storage::new(confg.depot_id);
     storage.add_pallet(123456, 200);
+    storage.add_pallet(123456, 200);
+    println!("storage:\n{:?}",storage);
 Ok(())
 }
