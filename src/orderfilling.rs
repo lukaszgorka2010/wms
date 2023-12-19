@@ -9,6 +9,8 @@ pub enum OrderFillingError {
     FileReadError(std::io::Error),
     #[error("Failed to deserialize order file: {0}")]
     FileDeserializeError(serde_json::Error),
+    #[error("Failed to release order")]
+    ReleaseError,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -19,7 +21,7 @@ pub struct Order {
 }
 
 impl Order {
-     pub fn from_file(path: &str) -> Result<Self, OrderFillingError> {
+    pub fn from_file(path: &str) -> Result<Self, OrderFillingError> {
         match fs::read_to_string(path) {
             Ok(json) => match serde_json::from_str::<Order>(&json) {
                 Ok(order) => Ok(order),
@@ -27,5 +29,8 @@ impl Order {
             },
             Err(why) => Err(OrderFillingError::FileReadError(why)),
         }
-     }
- }
+    }
+    pub fn release(&mut self) -> Result<(), OrderFillingError>{
+        Ok(())
+    }
+}

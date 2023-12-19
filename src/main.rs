@@ -34,16 +34,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         io::stdin().read_line(&mut input).unwrap();
         println!("{}",input);
         match input.as_str().trim() {
-             "exit" => {
+            "exit" => {
                 println!("Program closing");
                 break;
             },
+            "addpal" => {
+                println!("Adding pallet to storage. Enter SKU:");
+                let mut inp = String::new();
+                io::stdin().read_line(&mut inp).unwrap();
+                //println!("{inp}");
+                let sku: u32 = inp.trim().parse().unwrap();
+
+                println!("Enter quantity");
+                let mut inp = String::new();
+                io::stdin().read_line(&mut inp).unwrap();
+                let quantity: u16 = inp.trim().parse().unwrap();
+                storage.add_pallet(sku, quantity);
+            },
+            "prnstg" => {
+                println!("{:#?}", storage);
+            }
             _ => {
                 println!("Not a valid command")
             },
         }
     }
 
-    println!("storage:\n{:?}",storage);
 Ok(())
 }
