@@ -13,7 +13,7 @@ pub enum OrderFillingError {
     ReleaseError,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Order {
     pub order_number: u64,
     pub depot_id: u32,
@@ -30,7 +30,17 @@ impl Order {
             Err(why) => Err(OrderFillingError::FileReadError(why)),
         }
     }
-    pub fn release(&mut self) -> Result<(), OrderFillingError>{
+    pub fn release(&self) -> Result<(), OrderFillingError> {
+        let order = self.clone();
+        let pick_items: HashMap<u32, u32> = HashMap::new();
+
+
+
         Ok(())
     }
+}
+
+struct OrderLine {
+    sku: u32,
+    qty: u32,
 }

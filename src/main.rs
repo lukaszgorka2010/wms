@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             "prnstg" => {
                 println!("{:#?}", storage);
             },
-            "exit" => {
+            "exit" | "q" | "quit" => {
                 println!("Program closing");
                 break;
             },
