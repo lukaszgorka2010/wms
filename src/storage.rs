@@ -56,7 +56,7 @@ impl Storage {
 
     fn get_free_id(&mut self) -> u64 {
         let depot_id = self.depot_id;
-        let candidate_id= depot_id * 10_u64.pow(15) + self.next_id;
+        let candidate_id= depot_id * 10_u64.pow(14) + self.next_id;
         self.next_id += 1;
         candidate_id
     }
