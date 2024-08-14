@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Slot {
-    id: String,
+    pub id: String,
 }
 impl Slot {
     pub fn new(id: &str) -> Self {

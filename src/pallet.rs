@@ -14,6 +14,17 @@ pub enum Status {
     Available,
     AwaitingPutaway(Slot),
 }
+
+impl std::fmt::Display for Status {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let status = match self {
+            Self::Available => String::from("Available"),
+            Self::AwaitingPutaway(_) => String::from("Awaiting putaway"),
+        };
+        write!(f,"{}",status)
+    }
+}
+
 impl Pallet {
     pub fn update_quantity(&mut self, new_quantity: u16) {
         self.quantity = new_quantity;
@@ -29,6 +40,18 @@ impl Pallet {
     }
     pub fn status(&self) -> &Status {
         &self.status
+    }
+    pub fn sku(&self) -> u32 {
+        self.sku
+    }
+    pub fn quantity(&self) -> u16 {
+        self.quantity
+    }
+    pub fn slot_name(&self) -> String {
+        match &self.slot {
+            Some(slot) => slot.id.clone(),
+            None => "".to_string(),
+        }
     }
     pub fn create(id: u64, sku: u32, quantity: u16) -> Pallet {
         Pallet {

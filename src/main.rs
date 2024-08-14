@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-// Imports
 use confy;
 use serde::{Serialize, Deserialize};
 use std::io;
@@ -9,7 +8,6 @@ mod pallet;
 mod slots;
 mod storage;
 
-// Unique depot identifier, should stored in a config file.
 #[derive(Serialize, Deserialize)]
 struct Config {
     depot_id: u64,
@@ -24,8 +22,8 @@ impl ::std::default::Default for Config {
 
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
-    let confg: Config = confy::load("wms", "cfg")?;
-    let mut storage = storage::Storage::new(confg.depot_id);
+    let config: Config = confy::load("wms", "cfg")?;
+    let mut storage = storage::Storage::new(config.depot_id);
     let mut input = String::new();
     
     loop {
@@ -48,7 +46,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
                 storage.add_pallet(sku, quantity);
             },
             "prnstg" => {
-                println!("{:#?}", storage);
+                println!("Pallet id\t\tSKU\t\tQty\tSlot\tStatus");
+                for (id, pallet) in storage.pallets() {
+                    println!("{}\t{}\t\t{}\t{}\t{}",
+                        id, pallet.sku(), pallet.quantity(),pallet.slot_name(),pallet.status());
+                }
             },
             "exit" | "q" | "quit" => {
                 println!("Program closing");

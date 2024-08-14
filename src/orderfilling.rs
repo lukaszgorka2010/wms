@@ -30,10 +30,11 @@ impl Order {
             Err(why) => Err(OrderFillingError::FileReadError(why)),
         }
     }
+    
+    #[allow(unused)]
     pub fn release(&self) -> Result<(), OrderFillingError> {
         let order = self.clone();
         let pick_items: HashMap<u32, u32> = HashMap::new();
-
 
 
         Ok(())

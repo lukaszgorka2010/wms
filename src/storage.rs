@@ -54,6 +54,10 @@ impl Storage {
         Err(StorageError::Putaway("Putaway failed".to_string()))
     }
 
+    pub fn pallets(&self) -> &HashMap<u64, Pallet> {
+        &self.pallets
+    }
+
     fn get_free_id(&mut self) -> u64 {
         let depot_id = self.depot_id;
         let candidate_id= depot_id * 10_u64.pow(14) + self.next_id;
